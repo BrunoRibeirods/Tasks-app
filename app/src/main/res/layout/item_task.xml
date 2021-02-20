@@ -1,34 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_margin="6dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="8dp">
+    >
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
+        android:id="@+id/task_type"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="5dp"
+        app:cardCornerRadius="80dp"
+        android:backgroundTint="@color/black"/>
+
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:background="@color/black"
+        app:cardCornerRadius="8dp"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:layout_margin="10dp"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            app:buttonTint="@color/white"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:background="@color/black"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/title_task"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Fazer alguma coisa"
-            android:textSize="18sp"
-            android:textColor="@color/white"/>
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:layout_margin="10dp"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                app:buttonTint="@color/white"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/title_task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Fazer alguma coisa"
+                android:textSize="18sp"
+                android:textColor="@color/white"/>
 
 
-    </LinearLayout>
+        </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+
+
+
+</LinearLayout>
