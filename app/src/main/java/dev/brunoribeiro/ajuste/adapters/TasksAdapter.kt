@@ -1,8 +1,10 @@
 package dev.brunoribeiro.ajuste.adapters
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import dev.brunoribeiro.ajuste.R
 import dev.brunoribeiro.ajuste.entities.Task
 import dev.brunoribeiro.ajuste.databinding.ItemTaskBinding
 
@@ -20,6 +22,7 @@ class TasksAdapter(private val listOfTasks: List<Task>): RecyclerView.Adapter<Ta
         fun bind(item: Task){
             with(binding){
                 titleTask.text = item.title
+                taskType.backgroundTintList = setTypeColor(item.type)
             }
         }
 
@@ -30,6 +33,17 @@ class TasksAdapter(private val listOfTasks: List<Task>): RecyclerView.Adapter<Ta
                 val binding = ItemTaskBinding.inflate(inflater, parent, false)
                 return TaskViewHolder(binding)
             }
+        }
+
+        private fun setTypeColor(type: Int?): ColorStateList{
+            val result = when(type){
+                Task.URGENTE -> R.color.red
+                Task.INTERMEDIARIO -> R.color.yellow
+                Task.NORMAL -> R.color.blue
+                else -> R.color.black
+            }
+
+            return ColorStateList.valueOf(binding.root.resources.getColor(result))
         }
     }
 
