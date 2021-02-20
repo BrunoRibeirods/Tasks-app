@@ -14,7 +14,7 @@
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
-            app:title="Home"
+            app:title="Tarefas"
             app:titleTextColor="@color/white"
             android:background="@color/black"
             android:layout_height="wrap_content"/>
