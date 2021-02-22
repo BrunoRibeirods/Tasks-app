@@ -8,8 +8,8 @@ import dev.brunoribeiro.ajuste.entities.Task
 
 @Dao
 interface TaskDao {
-    @Query("SELECT * FROM actual_tasks")
-    fun getAll(): List<Task>
+    @Query("SELECT * FROM actual_tasks ORDER BY type ")
+    fun getAll(): MutableList<Task>
 
     @Insert
     fun insert(task: Task)
