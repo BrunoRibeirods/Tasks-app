@@ -3,6 +3,7 @@ package dev.brunoribeiro.ajuste.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.room.Delete
 import dev.brunoribeiro.ajuste.database.AppDatabase
 import dev.brunoribeiro.ajuste.entities.Task
 import kotlinx.coroutines.Dispatchers
@@ -13,8 +14,8 @@ abstract class ServiceRepository {
 
 
 
-    private val _allTasks = MutableLiveData<List<Task>>()
-    val allTasks: LiveData<List<Task>>
+    private val _allTasks = MutableLiveData<MutableList<Task>>()
+    val allTasks: LiveData<MutableList<Task>>
         get() = _allTasks
 
     suspend fun getTasks() {
@@ -26,6 +27,12 @@ abstract class ServiceRepository {
     suspend fun insertTask(task: Task) {
         withContext(Dispatchers.IO) {
             database.TaskDatabaseDao.insert(task)
+        }
+    }
+
+    suspend fun deleteTask(task: Task) {
+        withContext(Dispatchers.IO) {
+            database.TaskDatabaseDao.delete(task)
         }
     }
 
