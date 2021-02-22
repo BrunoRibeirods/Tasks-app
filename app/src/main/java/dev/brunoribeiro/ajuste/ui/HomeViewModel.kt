@@ -19,4 +19,10 @@ class HomeViewModel(val repository: ServiceRepository): ViewModel() {
         }
     }
 
+    fun deleteTask(task: Task){
+        viewModelScope.launch {
+            repository.deleteTask(task)
+        }
+    }
+
 }
