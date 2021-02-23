@@ -1,8 +1,11 @@
 package dev.brunoribeiro.ajuste.adapters
 
 import android.content.res.ColorStateList
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import dev.brunoribeiro.ajuste.R
@@ -13,7 +16,7 @@ import dev.brunoribeiro.ajuste.ui.HomeViewModel
 
 class TasksAdapter(private val listOfTasks: MutableList<Task>, val deleteDao: HomeViewModel): RecyclerView.Adapter<TasksAdapter.TaskViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        return TaskViewHolder.from(parent)
+        return TaskViewHolder.from(parent, deleteDao)
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) = holder.bind(listOfTasks[position])
@@ -27,21 +30,29 @@ class TasksAdapter(private val listOfTasks: MutableList<Task>, val deleteDao: Ho
     }
 
 
-    class TaskViewHolder(val binding: ItemTaskBinding): RecyclerView.ViewHolder(binding.root){
+
+
+    class TaskViewHolder(val binding: ItemTaskBinding, val viewModel: HomeViewModel): RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: Task){
             with(binding){
                 titleTask.text = item.title
                 taskType.backgroundTintList = setTypeColor(item.type)
+                checkTask.isChecked = item.checked!!
+
+
+                checkTask.setOnClickListener {
+                    viewModel.updateTask(!item.checked!!, item)
+                }
             }
         }
 
 
         companion object{
-            fun from(parent: ViewGroup): TaskViewHolder {
+            fun from(parent: ViewGroup, viewModel: HomeViewModel): TaskViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
                 val binding = ItemTaskBinding.inflate(inflater, parent, false)
-                return TaskViewHolder(binding)
+                return TaskViewHolder(binding, viewModel)
             }
         }
 
