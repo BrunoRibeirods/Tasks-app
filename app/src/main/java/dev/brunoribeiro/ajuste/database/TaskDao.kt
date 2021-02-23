@@ -16,4 +16,7 @@ interface TaskDao {
 
     @Delete
     fun delete(task: Task)
+
+    @Query("UPDATE actual_tasks SET check_value = :check WHERE id =:id")
+    fun update(check: Boolean, id: Int)
 }

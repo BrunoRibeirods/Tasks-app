@@ -36,6 +36,12 @@ abstract class ServiceRepository {
         }
     }
 
+    suspend fun updateTask(check: Boolean, task: Task) {
+        withContext(Dispatchers.IO) {
+            database.TaskDatabaseDao.update(check, task.room_id!!)
+        }
+    }
+
 
 
 
