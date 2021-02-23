@@ -1,20 +1,21 @@
 package dev.brunoribeiro.ajuste.ui
 
-import android.content.res.ColorStateList
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Scroller
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dev.brunoribeiro.ajuste.R
-import dev.brunoribeiro.ajuste.databinding.FragmentHomeBinding
 import dev.brunoribeiro.ajuste.databinding.FragmentTaskAddBinding
 import dev.brunoribeiro.ajuste.entities.Task
 import dev.brunoribeiro.ajuste.repository.ServiceRepository
+
 
 class TaskAddFragment : Fragment() {
 
@@ -33,8 +34,8 @@ class TaskAddFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTaskAddBinding.inflate(inflater, container, false)
         repository = ServiceRepository.getInstance(requireContext())
@@ -57,21 +58,33 @@ class TaskAddFragment : Fragment() {
             binding.typeName.setTextColor(binding.root.resources.getColor(R.color.blue))
         }
 
-
-        binding.btnAddTask.setOnClickListener {
-            if (binding.etTaskAdd.text.isNullOrEmpty() && type == 0){
-                Toast.makeText(context, "Campos vazios", Toast.LENGTH_SHORT).show()
-            }else{
-                sendTask(getTask(binding.etTaskAdd.text.toString(), type))
+        binding.toolbarAddTask.setOnMenuItemClickListener {
+            when(it.itemId){
+                R.id.menu_btn_adicionar_task -> {
+                    if (binding.etTaskAdd.text.isNullOrEmpty() && type == 0) {
+                        Toast.makeText(context, "Campos vazios", Toast.LENGTH_SHORT).show()
+                        false
+                    } else {
+                        sendTask(getTask(binding.etTaskAdd.text.toString(), type))
+                        true
+                    }
+                }
+                else -> false
             }
-
         }
+
+        binding.etTaskAdd.setScroller(Scroller(context))
+        binding.etTaskAdd.maxLines = 3
+        binding.etTaskAdd.isVerticalScrollBarEnabled = true
+        binding.etTaskAdd.movementMethod = ScrollingMovementMethod()
+
+
         return binding.root
     }
 
     fun getTask(title: String, type: Int): Task{
 
-        return Task(null, title, type)
+        return Task(null, title, type, false)
     }
 
     fun sendTask(task: Task){
