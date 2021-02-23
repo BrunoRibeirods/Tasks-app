@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import dev.brunoribeiro.ajuste.entities.Task
 
-@Database(entities = [Task::class], version = 2, exportSchema = false)
+@Database(entities = [Task::class], version = 4, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
     abstract val TaskDatabaseDao: TaskDao
 
