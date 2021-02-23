@@ -25,4 +25,10 @@ class HomeViewModel(val repository: ServiceRepository): ViewModel() {
         }
     }
 
+    fun updateTask(check: Boolean, task: Task){
+        viewModelScope.launch {
+            repository.updateTask(check, task)
+        }
+    }
+
 }
