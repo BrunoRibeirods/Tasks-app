@@ -15,4 +15,11 @@
     <color name="yellow">#fcbc05</color>
     <color name="blue">#0066da</color>
     <color name="green">#34a853</color>
+    <color name="bg">#011627</color>
+    <color name="bgdark">#141414</color>
+
+    <color name="bgscreen">#1f1f1f</color>
+    <color name="dark">#181818</color>
+    <color name="lesswhite">#eaeaea</color>
+    <color name="purpleapp">#5D40FF</color>
 </resources>

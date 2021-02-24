@@ -1,10 +1,13 @@
 package dev.brunoribeiro.ajuste.ui
 
+import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Scroller
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -44,18 +47,15 @@ class TaskAddFragment : Fragment() {
 
         binding.typeUrgente.setOnClickListener {
             type = Task.URGENTE
-            binding.typeName.text = " Urgente"
-            binding.typeName.setTextColor(binding.root.resources.getColor(R.color.red))
+            selectedBackgroundForNow(1)
         }
         binding.typeIntermediario.setOnClickListener {
             type = Task.INTERMEDIARIO
-            binding.typeName.text = " Intermediario"
-            binding.typeName.setTextColor(binding.root.resources.getColor(R.color.yellow))
+            selectedBackgroundForNow(2)
         }
         binding.typeNormal.setOnClickListener {
             type = Task.NORMAL
-            binding.typeName.text = " Normal"
-            binding.typeName.setTextColor(binding.root.resources.getColor(R.color.blue))
+            selectedBackgroundForNow(3)
         }
 
         binding.toolbarAddTask.setOnMenuItemClickListener {
@@ -90,6 +90,34 @@ class TaskAddFragment : Fragment() {
     fun sendTask(task: Task){
         viewModel.sendTask(task)
         activity?.onBackPressed()
+    }
+
+    override fun onStop() {
+        val imm: InputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.etTaskAdd.windowToken, 0)
+        super.onStop()
+    }
+
+    //I will change this \o/
+    private fun selectedBackgroundForNow(num: Int){
+        when(num){
+            1 -> {
+                binding.typeUrgente.setBackgroundColor(binding.root.resources.getColor(R.color.bgdark))
+                binding.typeIntermediario.setBackgroundColor(binding.root.resources.getColor(R.color.bgscreen))
+                binding.typeNormal.setBackgroundColor(binding.root.resources.getColor(R.color.bgscreen))
+            }
+            2 ->{
+                binding.typeUrgente.setBackgroundColor(binding.root.resources.getColor(R.color.bgscreen))
+                binding.typeIntermediario.setBackgroundColor(binding.root.resources.getColor(R.color.bgdark))
+                binding.typeNormal.setBackgroundColor(binding.root.resources.getColor(R.color.bgscreen))
+            }
+            3 -> {
+                binding.typeUrgente.setBackgroundColor(binding.root.resources.getColor(R.color.bgscreen))
+                binding.typeIntermediario.setBackgroundColor(binding.root.resources.getColor(R.color.bgscreen))
+                binding.typeNormal.setBackgroundColor(binding.root.resources.getColor(R.color.bgdark))
+            }
+            else -> false
+        }
     }
 
 }
