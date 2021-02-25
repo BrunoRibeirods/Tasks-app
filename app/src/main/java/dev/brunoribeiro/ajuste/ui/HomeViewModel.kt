@@ -31,4 +31,10 @@ class HomeViewModel(val repository: ServiceRepository): ViewModel() {
         }
     }
 
+    fun sendTask(task: Task){
+        viewModelScope.launch {
+            repository.insertTask(task)
+        }
+    }
+
 }
