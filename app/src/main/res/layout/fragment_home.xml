@@ -42,7 +42,7 @@
         android:id="@+id/fab_add_task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/purpleapp"
+        android:backgroundTint="@color/black"
         android:layout_gravity="bottom|end"
         android:src="@drawable/ic_baseline_add_24"
         app:tint="@color/white"
