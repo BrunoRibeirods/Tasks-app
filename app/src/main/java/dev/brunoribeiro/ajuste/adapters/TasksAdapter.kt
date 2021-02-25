@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import dev.brunoribeiro.ajuste.R
 import dev.brunoribeiro.ajuste.entities.Task
 import dev.brunoribeiro.ajuste.databinding.ItemTaskBinding
@@ -23,10 +24,25 @@ class TasksAdapter(private val listOfTasks: MutableList<Task>, val deleteDao: Ho
 
     override fun getItemCount(): Int = listOfTasks.size
 
-    fun removeAt(position: Int) {
+    fun removeAt(position: Int, view: View){
+        val task = listOfTasks[position]
+
         deleteDao.deleteTask(listOfTasks[position])
         listOfTasks.removeAt(position)
         notifyItemRemoved(position)
+
+
+        Snackbar.make(view, "Deseja desfazer a ação?", Snackbar.LENGTH_LONG)
+                .setAction("Desfazer") {
+                    undoRemove(task)
+                }.setActionTextColor(ColorStateList.valueOf(view.resources.getColor(R.color.purple_200)))
+                .show()
+    }
+    fun undoRemove(task: Task){
+        deleteDao.sendTask(task)
+        val pos = listOfTasks.indexOf(task)
+        notifyItemChanged(pos)
+        deleteDao.getTasks()
     }
 
 
