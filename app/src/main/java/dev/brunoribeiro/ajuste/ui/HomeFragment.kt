@@ -1,15 +1,14 @@
 package dev.brunoribeiro.ajuste.ui
 
+import android.database.DataSetObserver
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SimpleAdapter
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,9 +17,7 @@ import dev.brunoribeiro.ajuste.R
 import dev.brunoribeiro.ajuste.adapters.TasksAdapter
 import dev.brunoribeiro.ajuste.databinding.FragmentHomeBinding
 import dev.brunoribeiro.ajuste.entities.SwipeToDeleteCallback
-import dev.brunoribeiro.ajuste.entities.Task
 import dev.brunoribeiro.ajuste.repository.ServiceRepository
-import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
@@ -39,8 +36,8 @@ class HomeFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         repository = ServiceRepository.getInstance(requireContext())
@@ -48,6 +45,18 @@ class HomeFragment : Fragment() {
         viewModel.getTasks()
 
         binding.fabAddTask.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_taskAddFragment) }
+
+        val swipeHandler = object : SwipeToDeleteCallback(binding.root.context) {
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = binding.rvTasks.adapter as TasksAdapter
+                adapter.removeAt(viewHolder.adapterPosition, binding.root)
+            }
+        }
+
+
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding.rvTasks)
 
         viewModel.allTasks.observe(viewLifecycleOwner){
             binding.rvTasks.apply {
@@ -57,18 +66,14 @@ class HomeFragment : Fragment() {
             }
         }
 
-        val swipeHandler = object : SwipeToDeleteCallback(binding.root.context) {
 
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val adapter = binding.rvTasks.adapter as TasksAdapter
-                adapter.removeAt(viewHolder.adapterPosition)
-            }
-        }
-
-        val itemTouchHelper = ItemTouchHelper(swipeHandler)
-        itemTouchHelper.attachToRecyclerView(binding.rvTasks)
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getTasks()
     }
 
 
